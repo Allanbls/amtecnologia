@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /ops/
+
+Sitemap: https://amtecnologia-qptc.vercel.app/sitemap.xml
