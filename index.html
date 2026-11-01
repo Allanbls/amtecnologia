@@ -2067,5 +2067,29 @@ document.querySelectorAll('.proj').forEach(p=>{
  if(s2) new MutationObserver(function(){ if(!s2.hidden) amGA.track('formulario_agencia_enviado'); }).observe(s2,{attributes:true,attributeFilter:['hidden']});
 })();
 </script>
+
+<!-- ===================== TEMA HALLOWEEN (modo noite) =====================
+     No modo escuro, o fundo do site vira o vídeo de Halloween.
+     Para desligar depois do Halloween: mude HW_ATIVO para false em assets/js/halloween.js
+     Vídeo: assets/halloween/fundo-halloween.mp4 (capa: fundo-halloween.jpg)
+========================================================================= -->
+<style>
+#hw-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;background:#0b0910;opacity:0;visibility:hidden;transition:opacity .25s ease-out,visibility 0s linear .25s}
+#hw-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 32%;transform:scale(1.06);transition:transform 1.2s cubic-bezier(.23,1,.32,1)}
+#hw-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,6,12,.55),rgba(8,6,12,.62) 40%,rgba(8,6,12,.78))}
+body.hw #hw-bg{opacity:1;visibility:visible;transition:opacity .9s cubic-bezier(.23,1,.32,1),visibility 0s}
+body.hw #hw-bg video{transform:scale(1)}
+/* deixa o vídeo aparecer atrás das seções */
+body.dark.hw{background:transparent}
+body.dark.hw .top{background:rgba(15,14,14,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+body.dark.hw .sec,body.dark.hw #amseg section,body.dark.hw .marquee{background:rgba(15,14,14,.55)}
+body.dark.hw footer{background:rgba(15,14,14,.85)}
+html:has(body.dark.hw){background:#0b0910}
+@media (prefers-reduced-motion:reduce){#hw-bg video{transform:none;transition:none}}
+</style>
+<div id="hw-bg" aria-hidden="true"><video muted loop playsinline preload="none" poster="assets/halloween/fundo-halloween.jpg"></video></div>
+<script src="assets/js/halloween.js" defer></script>
+<!-- =================== FIM TEMA HALLOWEEN =================== -->
+
 </body>
 </html>
