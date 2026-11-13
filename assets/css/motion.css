@@ -4,7 +4,7 @@
 
 /* cabeçalho fixo sem blur (backdrop-filter pesa a rolagem no celular) */
 .top{-webkit-backdrop-filter:none;backdrop-filter:none}
-body:not(.dark) .top{background:#fff}
+.top{background:#fff}
 
 /* animações infinitas pausam quando a seção está fora da tela */
 .mv-paused,.mv-paused *{animation-play-state:paused!important}
