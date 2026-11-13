@@ -1,0 +1,63 @@
+/* AM Tecnologia — camada de movimento (entradas com mola, cards, faixa, textura, formas)
+   Mobile primeiro. Tudo respeita prefers-reduced-motion. Sem degradê, sem neon. */
+:root{--spring:cubic-bezier(.3,1.6,.5,1)}
+
+/* ---------- textura de papel (grão fino, estático) ---------- */
+body:not(.hw):not(.dark)::after{
+  content:"";position:fixed;inset:0;z-index:4;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .17  0 0 0 0 .16  0 0 0 0 .16  0 0 0 .075 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  background-size:200px 200px;
+}
+
+/* ---------- formas flutuantes (barras da marca + estrelas) ---------- */
+.mv-host{position:relative}
+.mv-host>.wrap{position:relative;z-index:1}
+.mv-shapes{position:absolute;inset:0;overflow:clip;pointer-events:none;z-index:0}
+.mv-shape{position:absolute;left:var(--x);top:var(--y);translate:0 var(--py,0px);will-change:translate}
+.mv-bar{display:block;width:var(--w,24px);height:var(--h,84px);background:var(--c,#FEB05D);border:3px solid #2B2A2A;border-radius:10px;box-shadow:4px 4px 0 #2B2A2A}
+.mv-star{display:block;width:var(--w,44px);height:var(--w,44px);color:var(--c,#5A7ACD)}
+.mv-star path{stroke:#2B2A2A;stroke-width:1.5;stroke-linejoin:round}
+@media (max-width:600px){.mv-shape{scale:.62}.mv-shape.lg{display:none}}
+@media (prefers-reduced-motion:no-preference){
+  .mv-bar{transform:skewX(-14deg) rotate(var(--r,0deg));animation:mvBar var(--d,6s) ease-in-out infinite alternate}
+  .mv-star{animation:mvStar var(--d,7s) ease-in-out infinite alternate}
+  @keyframes mvBar{to{transform:skewX(-14deg) rotate(calc(var(--r,0deg) + 7deg)) translateY(-14px)}}
+  @keyframes mvStar{from{transform:rotate(-8deg) scale(1)}to{transform:rotate(14deg) scale(1.12) translateY(-10px)}}
+}
+@media (prefers-reduced-motion:reduce){
+  .mv-bar{transform:skewX(-14deg) rotate(var(--r,0deg))}
+}
+
+/* ---------- entradas com mola ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rv,.mv{opacity:0;transform:translateY(52px) rotate(var(--mr,-2.5deg)) scale(.92);
+    transition:opacity .5s ease,transform 1s var(--spring)}
+  .rv.in,.mv.in{opacity:1;transform:none}
+  .mv{transition-delay:var(--md,0ms)}
+  @keyframes mvHero{from{opacity:0;transform:translateY(44px) rotate(-3deg) scale(.94)}to{opacity:1;transform:none}}
+  .hero h1,.hero .lead,.hero .acts,.hero .proof{animation:mvHero 1s var(--spring) both}
+  .hero h1{animation-delay:.05s}.hero .lead{animation-delay:.2s}
+  .hero .acts{animation-delay:.35s}.hero .proof{animation-delay:.5s}
+}
+.car-track .rv{opacity:1!important;transform:none!important;transition:none!important}
+
+/* ---------- cards: repouso inclinado, sombra que cresce, inclina com o ponteiro ---------- */
+.svcs .svc:nth-child(odd){--tilt:-.5deg}
+.svcs .svc:nth-child(even){--tilt:.5deg}
+.svc,.projcta .pc-box{rotate:var(--tilt,0deg)}
+@media (hover:hover) and (pointer:fine){
+  .svc,.projcta .pc-box{transition:transform .22s var(--pop),box-shadow .22s var(--pop),rotate .35s var(--spring)}
+  .svc:hover{transform:translate(-4px,-4px)}
+  .svc.is-tilt,.projcta .pc-box.is-tilt{rotate:calc(var(--nx,0)*1.8deg);box-shadow:calc(10px - var(--nx,0)*5px) calc(10px - var(--ny,0)*5px) 0 #2B2A2A}
+}
+@media (hover:none){
+  .svc,.projcta .pc-box{transition:transform .18s var(--pop),box-shadow .18s var(--pop)}
+  .svc:active,.projcta .pc-box:active{transform:translate(3px,3px);box-shadow:3px 3px 0 #2B2A2A}
+}
+
+/* ---------- 2ª faixa (contra-inclinada, sentido oposto) ---------- */
+.marquee.mv-rev{background:var(--blue-t,#4A69BF);color:#fff;transform:rotate(1.5deg);margin:clamp(14px,3vw,34px) -20px}
+.marquee.mv-rev svg{color:var(--or,#FEB05D)}
+.marquee.mv-rev .track{animation-direction:reverse}
+.marquee .track.mv-off{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.marquee .track{animation:none}}
